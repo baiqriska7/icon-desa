@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-g">
+        <Mmeta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Desaku</title>
+            <link rel="stylesheet" href="assets/leaflet.css">
+            <script src="assets/leaflet.js"></script>
+            <script src="art batujai.geojson.js"></script>
+            <script src="line batujai.geojson.js"></script>
+            
+            <style>
+                html,body{
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                }
+                #map{
+                    height: 100%;
+                }
+            </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+    //marker pemerintah
+    var desaIcon = L.icon({
+    iconUrl: "assets/images/icon desa.png",
+    iconSize:     [38, 38], 
+    iconAnchor:   [22, 34], 
+    popupAnchor:  [-3, -36] 
+});
+    var kantor_desa = L.marker([-8.739096753336097, 116.24488821357664],{icon:desaIcon}).bindPopup("Kantor Desa batujai");
+    //    kantor_camat = L.marker([-8.617935715585265, 116.38358901205451]).bindPopup("kantor_camat");
+    var Pemerintahan = L.layerGroup([kantor_desa,]);
+
+    // // menampilkan Fasilitas Pendidikan (SD, SMP, SMK, dll)
+    var greenIcon = L.icon({
+    iconUrl: "assets/images/icon sekolah.png",
+    iconSize:     [38, 38], 
+    iconAnchor:   [22, 34], 
+    popupAnchor:  [-3, -36] 
+});
+    var sdn_batujai = L.marker([-8.735399234267856, 116.24420731629199],{icon:greenIcon}).bindPopup("SDN batujai"),
+       sdn1_batujai = L.marker([-8.736883845068805, 116.24188988780612],{icon:greenIcon}).bindPopup("SDN1 batujai"),
+       sdn_praya = L.marker([-8.73245856029093, 116.22853094285729],{icon:greenIcon}).bindPopup("SDN_praya")
+    var Pendidikan =L.layerGroup([sdn_batujai, sdn1_batujai,sdn_praya]);
+
+    // // menampilkan Fasilitas Ibadah
+    var ibadahIcon = L.icon({
+    iconUrl: "assets/images/icon masjid.png",
+    iconSize:     [38, 38], 
+    iconAnchor:   [22, 34], 
+    popupAnchor:  [-3, -36] 
+});
+    var Masjid = L.marker([-8.732722172029488, 116.22535899299436],{icon:ibadahIcon}).bindPopup("MASJIDBATUJAI"),
+       Masjid_batujai = L.marker([-8.738109198889441, 116.24514296624852],{icon:ibadahIcon}).bindPopup("MASJID")
+    var Ibadah =L.layerGroup([Masjid,Masjid_batujai]);
+
+   
+    const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Made with <i class="fa fa-heart text-danger"></i> by <a href="https://jihadul4kbar.github.io/" target="_blank">Jihadul Akbar</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            });
+        const osmHOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+            attribution: 'Made with <i class="fa fa-heart text-danger"></i> by <a href="https://jihadul4kbar.github.io/" target="_blank">Jihadul Akbar</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            });
+        const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Made with <i class="fa fa-heart text-danger"></i> by <a href="https://jihadul4kbar.github.io/" target="_blank">Jihadul Akbar</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+         });
+
+         const map = L.map('map', {
+            center: [-8.7399803,116.2412247], 
+            zoom:15,
+            layers:[osm, Pemerintahan]
+         });
+         const baseMaps = {
+            "Basepeta": osm,
+            "OpenStreetMap.HOT": osmHOT,
+            "Satellite": satellite
+         };
+         const overlayMaps = {
+            "pemerintahan": Pemerintahan,
+            "pendidikan" : Pendidikan,
+            "ibadah" : Ibadah,
+            // "umum" : umum,
+         };
+
+         const layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
+         var Barabali = L.geoJSON([Barabali], {
+		style: function (feature) {
+			return feature.properties && feature.properties.style;
+		}
+	}).addTo(map);
+    
+
+        </script>
+        </body>
+        </html>
